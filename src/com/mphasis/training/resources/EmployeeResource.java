@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -66,6 +67,21 @@ public class EmployeeResource {
 	
 	@POST
 	public Response addEmployee(Employee employee) throws URISyntaxException {
+		
+		try {
+			employeeBo.addEmployee(employee);
+		} catch (BuisnessException e) {
+			throw new DataNotPresentException(e.getMessage());
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return Response.created(new URI("/RestProject/emp/"+employee.getEmpid())).entity(employee).build();
+	}
+	
+	
+	@PUT
+	public Response updateEmployee(Employee employee) throws URISyntaxException {
 		
 		try {
 			employeeBo.addEmployee(employee);
